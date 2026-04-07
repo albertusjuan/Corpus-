@@ -292,32 +292,114 @@
     gap: var(--space-8);
   }
 
+  /* Page offset for the GuidingElement sidebar */
   .page-wrapper {
     padding-left: 60px;
   }
-  
-  @media (max-width: 768px) {
-    .page-wrapper {
-      padding-left: 0;
-    }
+
+  /* Hero layout */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+    align-items: center;
   }
+
+  /* Stats strip */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Contact two-column */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  /* Hero CTA buttons */
+  .hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Stats cell — padding is controlled here so mobile can override */
+  .stat-cell {
+    padding: 3rem 2.5rem;
+  }
+
+  /* Contact form */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    background-color: var(--color-surface-alt);
+    padding: 3rem;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Mobile progress bar — hidden on desktop */
+  .desktop-hide { display: none; }
 
   @media (max-width: 1024px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
-    :root {
-      --gutter: 1.5rem;
-    }
+    :root { --gutter: 1.5rem; }
   }
 
   @media (max-width: 768px) {
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .section { padding-block: var(--space-10); }
-    :root {
-      --text-4xl: 2.25rem;
-      --text-5xl: 2.75rem;
-      --text-6xl: 3rem;
-      --gutter: 1.25rem;
+    /* Remove sidebar offset */
+    .page-wrapper { padding-left: 0; }
+
+    /* Mobile progress bar visible */
+    .desktop-hide { display: block; }
+
+    /* Hero: stack vertically, center-align content */
+    .hero-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
     }
+    .hero-buttons { justify-content: center; }
+
+    /* Globe: smaller, centered below text */
+    .hero-globe { max-width: 220px; margin: 0 auto; }
+
+    /* Stats: 2×2 with compact padding */
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-cell { padding: 1.5rem 1rem; }
+    .stats-grid > *:nth-child(2) { border-right: none !important; }
+    .stats-grid > *:nth-child(3) {
+      border-top: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border) !important;
+    }
+    .stats-grid > *:nth-child(4) { border-top: 1px solid var(--color-border); }
+
+    /* Contact: single column, tighter gap */
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* Contact form: reduced padding and gaps */
+    .contact-form { padding: 1.5rem; gap: 1.5rem; }
+
+    /* Cards: tighter padding, smaller ghost number */
+    .card { padding: var(--space-5); }
+    .ghost-num { font-size: 3rem !important; }
+
+    /* Grids: single column */
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+    /* Section vertical rhythm */
+    .section { padding-block: var(--space-6); }
+
+    /* Type scale */
+    :root {
+      --text-4xl: 2rem;
+      --text-5xl: 2.5rem;
+      --text-6xl: 2.75rem;
+      --gutter: 1rem;
+    }
+
+    /* Hide sidebar elements */
     .mobile-hide { display: none !important; }
   }
   /* ==========================================================================

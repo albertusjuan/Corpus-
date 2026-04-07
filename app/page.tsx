@@ -62,7 +62,7 @@ export default function SinglePageWebsite() {
   const heroScale   = useTransform(scrollYProgress, [0, 0.08], [1, 0.96]);
 
   return (
-    <div ref={containerRef} style={{ paddingLeft: '60px' }}>
+    <div ref={containerRef} className="page-wrapper">
       <GuidingElement />
 
       {/* ===================================================================
@@ -77,7 +77,7 @@ export default function SinglePageWebsite() {
         overflow: 'hidden',
       }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2rem', alignItems: 'center' }}>
+          <div className="hero-grid">
             {/* Left — copy */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -172,7 +172,7 @@ export default function SinglePageWebsite() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.8 }}
-                style={{ display: 'flex', gap: '1.5rem' }}
+                className="hero-buttons"
               >
                 <button
                   className="btn btn--primary"
@@ -196,7 +196,7 @@ export default function SinglePageWebsite() {
               transition={{ duration: 1.8, ease: [0.23, 1, 0.32, 1] }}
               style={{ display: 'flex', justifyContent: 'center' }}
             >
-              <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+              <div className="hero-globe" style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
                 <RotatingGlobe />
                 <motion.div
                   animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.1, 1] }}
@@ -488,11 +488,8 @@ export default function SinglePageWebsite() {
         borderTop: '1px solid var(--color-border)',
         borderBottom: '1px solid var(--color-border)',
       }}>
-        <div className="container" style={{ paddingInline: 0 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-          }}>
+        <div className="container">
+          <div className="stats-grid">
             {STATS.map((stat, i) => (
               <motion.div
                 key={i}
@@ -500,9 +497,9 @@ export default function SinglePageWebsite() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.08, ease: [0.23, 1, 0.32, 1] }}
+                className="stat-cell"
                 whileHover={{ backgroundColor: 'var(--color-surface)' }}
                 style={{
-                  padding: '3rem 2.5rem',
                   borderRight: i < 3 ? '1px solid var(--color-border)' : 'none',
                   transition: 'background-color 200ms ease',
                 }}
@@ -632,7 +629,7 @@ export default function SinglePageWebsite() {
       =================================================================== */}
       <section id="contact" className="section" style={{ backgroundColor: 'var(--color-surface)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem' }}>
+          <div className="contact-grid">
             <motion.div {...fadeUp}>
               {/* Section prefix */}
               <p style={{
@@ -710,14 +707,7 @@ export default function SinglePageWebsite() {
             {/* Form */}
             <motion.form
               {...fadeUp}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2.5rem',
-                backgroundColor: 'var(--color-surface-alt)',
-                padding: '3rem',
-                border: '1px solid var(--color-border)',
-              }}
+              className="contact-form"
               onSubmit={(e) => e.preventDefault()}
             >
               <div>
