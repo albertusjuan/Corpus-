@@ -5,8 +5,8 @@
    :root {
     /* --- Color --- */
     --color-bg:           #000000;
-    --color-surface:      #0a0a0a;
-    --color-surface-alt:  #141414;
+    --color-surface:      #111111;
+    --color-surface-alt:  #1a1a1a;
     --color-border:       #222222;
     --color-border-dark:  #444444;
 
@@ -147,6 +147,9 @@
   .section {
     padding-block: var(--space-10);
     position: relative;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin-top: -1px; /* collapse double borders */
   }
 
   .label {
