@@ -1,0 +1,47 @@
+{
+  "agents": {
+    "agent-layout": {
+      "agentId": "agent-layout",
+      "agentType": "architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "haiku"
+      },
+      "createdAt": "2026-04-06T04:32:44.940Z",
+      "domain": "frontend",
+      "model": "haiku",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-components": {
+      "agentId": "agent-components",
+      "agentType": "architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "haiku"
+      },
+      "createdAt": "2026-04-06T04:32:45.027Z",
+      "domain": "frontend",
+      "model": "haiku",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-pages": {
+      "agentId": "agent-pages",
+      "agentType": "architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-04-06T04:32:45.045Z",
+      "domain": "frontend",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    }
+  },
+  "version": "3.0.0"
+}

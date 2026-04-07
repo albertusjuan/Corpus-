@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ruflo__swarm_init",
+      "mcp__ruflo__agent_spawn",
+      "mcp__ruflo__swarm_status",
+      "Bash(python3 \"C:/Users/Albert/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"portfolio agency brutalism motion-driven dark monochrome web\" --design-system -p \"Corpus Project\" -f markdown)",
+      "Bash(py --version)",
+      "Bash(py \"C:/Users/Albert/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"portfolio agency brutalism motion-driven dark monochrome web\" --design-system -p \"Corpus Project\" -f markdown)",
+      "Bash(py \"/c/Users/Albert/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/src/ui-ux-pro-max/scripts/search.py\" \"portfolio agency brutalism motion-driven dark monochrome web\" --design-system -p \"Corpus Project\" -f markdown)",
+      "Bash(xargs grep:*)",
+      "Bash(npx next:*)",
+      "Read(//c/Users/Albert/.claude/projects/C--Users-Albert-Documents-Work-Projects/**)",
+      "Read(//c/Users/Albert/.claude/projects/C--Users-Albert-Documents-Work-Projects/memory/**)"
+    ]
+  }
+}
