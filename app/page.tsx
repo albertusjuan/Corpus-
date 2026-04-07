@@ -120,7 +120,7 @@ export default function SinglePageWebsite() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 1, ease: [0.23, 1, 0.32, 1] }}
                 style={{
-                  fontSize: 'clamp(4rem, 12vw, 10rem)',
+                  fontSize: 'clamp(2.5rem, 12vw, 10rem)',
                   lineHeight: 0.85,
                   fontWeight: 900,
                   marginBottom: '0.5rem',
@@ -140,7 +140,7 @@ export default function SinglePageWebsite() {
               >
                 <span style={{
                   fontFamily: 'var(--font-display), sans-serif',
-                  fontSize: 'clamp(2.5rem, 7vw, 6.5rem)',
+                  fontSize: 'clamp(1.5rem, 7.5vw, 6.5rem)',
                   fontWeight: 900,
                   letterSpacing: '-0.04em',
                   textTransform: 'uppercase',
@@ -158,8 +158,9 @@ export default function SinglePageWebsite() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
                 style={{
-                  fontSize: 'var(--text-lg)',
+                  fontSize: 'clamp(0.9rem, 3.5vw, 1.25rem)',
                   maxWidth: '480px',
+                  width: '100%',
                   marginBottom: '3rem',
                   color: 'var(--color-text-muted)',
                   lineHeight: 1.6,
@@ -189,29 +190,31 @@ export default function SinglePageWebsite() {
               </motion.div>
             </motion.div>
 
-            {/* Right — Globe */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 1.8, ease: [0.23, 1, 0.32, 1] }}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <div className="hero-globe" style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
-                <RotatingGlobe />
-                <motion.div
-                  animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.1, 1] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  style={{
-                    position: 'absolute',
-                    top: '50%', left: '50%',
-                    width: '120%', height: '120%',
-                    x: '-50%', y: '-50%',
-                    background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-              </div>
-            </motion.div>
+            {/* Right — Globe (background on mobile) */}
+            <div className="hero-globe-bg">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 1.8, ease: [0.23, 1, 0.32, 1] }}
+                style={{ display: 'flex', justifyContent: 'center' }}
+              >
+                <div className="hero-globe" style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+                  <RotatingGlobe />
+                  <motion.div
+                    animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                    style={{
+                      position: 'absolute',
+                      top: '50%', left: '50%',
+                      width: '120%', height: '120%',
+                      x: '-50%', y: '-50%',
+                      background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function RotatingGlobe() {
   return (
-    <div style={{ perspective: '1200px', width: '500px', height: '500px', margin: '0 auto' }}>
+    <div style={{ perspective: '1200px', width: 'min(500px, 90vw)', height: 'min(500px, 90vw)', margin: '0 auto' }}>
       <motion.div
         style={{
           width: '100%',
