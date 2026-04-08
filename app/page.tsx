@@ -9,9 +9,9 @@ import GuidingElement from '@/components/GuidingElement';
 
 // --- Marquee content ---
 const MARQUEE_ITEMS = [
-  'Web Architecture', '✦', 'Motion Design', '✦',
-  'Brutalist Systems', '✦', 'Custom Engineering', '✦',
-  'Global Infrastructure', '✦', 'Interactive 3D', '✦',
+  'Business Websites', '✦', 'Portfolio Websites', '✦',
+  'Landing Pages', '✦', 'E-Commerce Websites', '✦',
+  'Restaurant Websites', '✦', 'Personal Brand Websites', '✦',
 ];
 
 // Duplicated so the CSS loop is seamless
@@ -19,20 +19,20 @@ const MARQUEE_FULL = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
 
 // --- Stats ---
 const STATS = [
-  { num: '12+',  label: 'Projects Deployed' },
+  { num: '12+',  label: 'Websites Delivered' },
   { num: '100%', label: 'On-Time Delivery' },
   { num: '3',    label: 'Years Active' },
-  { num: '∞',    label: 'Revisions Committed' },
+  { num: '3 Mo', label: 'Up to 3 Months of Retainer' },
 ];
 
 // --- Services ---
 const SERVICES = [
-  { icon: <Monitor size={22} />, name: 'Business Architectures',   desc: 'Trustworthy, scalable digital storefronts for elite enterprises.' },
-  { icon: <Briefcase size={22} />, name: 'Signature Portfolios',   desc: 'Minimalist environments that let your professional work take center stage.' },
-  { icon: <Layers size={22} />, name: 'High-Conversion Landing',   desc: 'Surgical precision in user flow and conversion optimization.' },
-  { icon: <Code size={22} />, name: 'Custom Engineering',          desc: 'Tailored technical solutions for non-standard digital requirements.' },
-  { icon: <Globe size={22} />, name: 'Global Infrastructure',      desc: 'Fast, secure, and globally distributed web systems.' },
-  { icon: <Box size={22} />, name: 'Interactive Systems',          desc: 'Complex interactive features and fluid user experiences.' },
+  { icon: <Monitor size={22} />, name: 'Business Websites', desc: 'Professional websites for businesses that want to build trust, explain their services clearly, and attract more customers online.' },
+  { icon: <Briefcase size={22} />, name: 'Portfolio Websites', desc: 'Clean and modern websites to showcase your work, projects, services, or personal brand in a simple and credible way.' },
+  { icon: <Layers size={22} />, name: 'Landing Pages', desc: 'Focused one-page websites designed to present an offer clearly and encourage visitors to get in touch or take action.' },
+  { icon: <Code size={22} />, name: 'Custom Website Solutions', desc: 'Tailored websites built around your business needs, goals, and content without forcing you into a one-size-fits-all template.' },
+  { icon: <Globe size={22} />, name: 'Responsive Website Design', desc: 'Websites that look good and work smoothly on desktop, tablet, and mobile so every visitor gets a better experience.' },
+  { icon: <Box size={22} />, name: 'Website Support & Updates', desc: 'Ongoing help with edits, improvements, and maintenance after launch so your website stays current and reliable.' },
 ];
 
 // --- Shared animation variants ---
@@ -125,7 +125,7 @@ export default function SinglePageWebsite() {
                     backgroundColor: 'var(--color-brutal)',
                     display: 'inline-block',
                   }} />
-                  Status: Operational
+                  Now Booking Projects
                 </span>
               </motion.div>
 
@@ -181,7 +181,7 @@ export default function SinglePageWebsite() {
                   lineHeight: 1.6,
                 }}
               >
-                We build elite digital architectures — precise, monochrome, and unapologetically functional.
+                We design simple, modern websites that help businesses, creators, and brands present themselves clearly and professionally online.
               </motion.p>
 
               <motion.div
@@ -194,7 +194,7 @@ export default function SinglePageWebsite() {
                   className="btn btn--primary"
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Initiate Project <ArrowRight size={16} />
+                  Start Your Project <ArrowRight size={16} />
                 </button>
                 <button
                   className="btn"
@@ -297,9 +297,9 @@ export default function SinglePageWebsite() {
               lineHeight: 1.15,
               fontWeight: 700,
             }}>
-              We eliminate the noise.{' '}
+              Simple websites, built with purpose.{' '}
               <span style={{ color: 'var(--color-text-muted)' }}>
-                Absolute functional clarity for modern brands.
+                Clear design that helps people understand and trust your brand.
               </span>
             </h2>
             <p style={{
@@ -309,8 +309,7 @@ export default function SinglePageWebsite() {
               margin: '0 auto',
               lineHeight: 1.7,
             }}>
-              Corpus Project builds minimal, high-performing websites — strict monochrome aesthetics,
-              fluid motion, and zero tolerance for bloated page builders.
+              Corpus Project creates clean, modern websites that are easy to use, visually strong, and focused on what matters most — helping your business look professional online.
             </p>
           </motion.div>
         </div>
@@ -328,8 +327,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Capabilities</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Engineered Solutions</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>Services</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>What We Build</h2>
           </motion.div>
 
           <motion.div
@@ -347,7 +346,6 @@ export default function SinglePageWebsite() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.35 }}
               >
-                {/* Ghost number — brutalist index */}
                 <span
                   className="ghost-num"
                   style={{
@@ -387,8 +385,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Selected Work</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Recent Deployments</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>Portfolio</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Recent Projects</h2>
           </motion.div>
 
           <motion.div
@@ -405,7 +403,6 @@ export default function SinglePageWebsite() {
                 style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', cursor: 'pointer' }}
                 whileHover="hover"
               >
-                {/* Preview frame */}
                 <motion.div
                   style={{
                     width: '100%',
@@ -424,7 +421,6 @@ export default function SinglePageWebsite() {
                   }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 >
-                  {/* Spin overlay */}
                   <motion.div
                     variants={{ hover: { scale: 1.1, opacity: 0.08 } }}
                     style={{
@@ -435,7 +431,6 @@ export default function SinglePageWebsite() {
                     }}
                   />
 
-                  {/* Yellow hover accent bar */}
                   <motion.div
                     variants={{
                       hover:   { scaleX: 1 },
@@ -451,7 +446,6 @@ export default function SinglePageWebsite() {
                     }}
                   />
 
-                  {/* CTA button overlay */}
                   <motion.div
                     variants={{
                       hover:   { opacity: 1, y: 0 },
@@ -461,7 +455,7 @@ export default function SinglePageWebsite() {
                     style={{ zIndex: 2, position: 'absolute' }}
                   >
                     <button className="btn btn--primary" style={{ padding: '0.7rem 1.4rem', fontSize: '11px' }}>
-                      View Module <ArrowUpRight size={14} />
+                      View Project <ArrowUpRight size={14} />
                     </button>
                   </motion.div>
 
@@ -473,11 +467,10 @@ export default function SinglePageWebsite() {
                     color: 'var(--color-border-dark)',
                     zIndex: 1,
                   }}>
-                    {item.tag} // ARCHIVE
+                    {item.tag} // PROJECT
                   </span>
                 </motion.div>
 
-                {/* Meta row */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <h3 style={{ fontSize: 'var(--text-xl)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
@@ -560,8 +553,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Acquisition</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Tiers of Service</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>Pricing</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Website Packages</h2>
           </motion.div>
 
           {/* Desktop: 3-column grid */}
@@ -595,7 +588,7 @@ export default function SinglePageWebsite() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.15em',
                   }}>
-                    Recommended
+                    Most Popular
                   </span>
                 )}
 
@@ -634,7 +627,7 @@ export default function SinglePageWebsite() {
                     </p>
                   </div>
                   <button className={`btn ${i === 1 ? 'btn--primary' : ''}`} style={{ width: '100%' }}>
-                    Select Package
+                    {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
                   </button>
                 </div>
               </motion.div>
@@ -670,7 +663,7 @@ export default function SinglePageWebsite() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.15em',
                       }}>
-                        Recommended
+                        Most Popular
                       </span>
                     )}
 
@@ -709,7 +702,7 @@ export default function SinglePageWebsite() {
                         </p>
                       </div>
                       <button className={`btn ${i === 1 ? 'btn--primary' : ''}`} style={{ width: '100%' }}>
-                        Select Package
+                        {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
                       </button>
                     </div>
                   </div>
@@ -761,7 +754,6 @@ export default function SinglePageWebsite() {
         <div className="container">
           <div className="contact-grid">
             <motion.div {...fadeUp}>
-              {/* Section prefix */}
               <p style={{
                 fontFamily: 'var(--font-mono), monospace',
                 fontSize: '10px',
@@ -789,7 +781,7 @@ export default function SinglePageWebsite() {
                 letterSpacing: '-0.04em',
                 lineHeight: 0.9,
               }}>
-                INITIATE.
+                LET’S TALK.
               </h2>
 
               <p style={{
@@ -799,7 +791,7 @@ export default function SinglePageWebsite() {
                 lineHeight: 1.6,
                 maxWidth: '360px',
               }}>
-                Send your parameters. We review and respond within 24 hours with a precise architectural proposal.
+                Tell us what you need, and we’ll get back to you with a clear plan, timeline, and package recommendation.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -834,7 +826,6 @@ export default function SinglePageWebsite() {
               </div>
             </motion.div>
 
-            {/* Form */}
             <motion.form
               {...fadeUp}
               className="contact-form"
@@ -850,7 +841,7 @@ export default function SinglePageWebsite() {
               </div>
               <div>
                 <label className="form-label">Project Brief</label>
-                <textarea className="form-textarea" placeholder="Describe your objective..."></textarea>
+                <textarea className="form-textarea" placeholder="Tell us about your website or business..." />
               </div>
               <button type="submit" className="btn btn--primary" style={{ alignSelf: 'stretch' }}>
                 Send Message <ArrowRight size={16} />
