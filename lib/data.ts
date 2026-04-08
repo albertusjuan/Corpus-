@@ -46,7 +46,7 @@ export const products: Product[] = [
       'Priority Engineering Support',
       'Full SEO Suite',
     ],
-    price: '$41,999',
+    price: '$1,999',
     tag: 'advance',
   },
   {

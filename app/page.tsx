@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Globe, Monitor, Code, Layers, Mail, Briefcase, Box, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Globe, Monitor, Code, Layers, Mail, Briefcase, Box, ArrowUpRight } from 'lucide-react';
 import { products, portfolio } from '@/lib/data';
 import RotatingGlobe from '@/components/RotatingGlobe';
 import GuidingElement from '@/components/GuidingElement';
@@ -60,6 +60,21 @@ export default function SinglePageWebsite() {
 
   const heroOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
   const heroScale   = useTransform(scrollYProgress, [0, 0.08], [1, 0.96]);
+
+  const pricingRef = useRef<HTMLDivElement>(null);
+  const [pricingIndex, setPricingIndex] = useState(0);
+
+  const scrollToCard = (index: number) => {
+    const next = Math.max(0, Math.min(index, products.length - 1));
+    pricingRef.current?.scrollTo({ left: pricingRef.current.offsetWidth * next, behavior: 'smooth' });
+    setPricingIndex(next);
+  };
+
+  const handlePricingScroll = () => {
+    if (!pricingRef.current) return;
+    const index = Math.round(pricingRef.current.scrollLeft / pricingRef.current.offsetWidth);
+    setPricingIndex(index);
+  };
 
   return (
     <div ref={containerRef} className="page-wrapper">
@@ -549,8 +564,9 @@ export default function SinglePageWebsite() {
             <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Tiers of Service</h2>
           </motion.div>
 
+          {/* Desktop: 3-column grid */}
           <motion.div
-            className="grid-3"
+            className="grid-3 pricing-desktop"
             variants={staggerContainer}
             initial="initial"
             whileInView="whileInView"
@@ -624,6 +640,117 @@ export default function SinglePageWebsite() {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* Mobile: horizontal card swiper */}
+          <div className="pricing-swiper">
+            <div
+              className="pricing-swiper-track"
+              ref={pricingRef}
+              onScroll={handlePricingScroll}
+            >
+              {products.map((p, i) => (
+                <div key={p.id} className="pricing-swiper-card">
+                  <div
+                    className="card"
+                    style={{
+                      border: i === 1 ? '1px solid var(--color-brutal)' : '1px solid var(--color-border)',
+                    }}
+                  >
+                    {i === 1 && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '-12px', left: '50%',
+                        transform: 'translateX(-50%)',
+                        backgroundColor: 'var(--color-brutal)',
+                        color: 'var(--color-brutal-text)',
+                        padding: '2px 14px',
+                        fontFamily: 'var(--font-mono), monospace',
+                        fontSize: '9px',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.15em',
+                      }}>
+                        Recommended
+                      </span>
+                    )}
+
+                    <span className="label" style={{ fontSize: '10px' }}>{p.category}</span>
+                    <h3 className="card__title" style={{ fontSize: 'var(--text-2xl)', marginBottom: '1.5rem' }}>{p.name}</h3>
+                    <p className="card__body" style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem' }}>
+                      {p.description}
+                    </p>
+
+                    <ul style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {p.features.map((feat, fi) => (
+                        <li key={fi} style={{ fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div style={{
+                            width: '4px', height: '4px',
+                            background: i === 1 ? 'var(--color-brutal)' : 'white',
+                            flexShrink: 0,
+                          }} />
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid var(--color-border)' }}>
+                      <div style={{ marginBottom: '2rem' }}>
+                        <span style={{
+                          fontFamily: 'var(--font-mono), monospace',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em',
+                        }}>
+                          Starting At
+                        </span>
+                        <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700 }}>
+                          {p.price}
+                        </p>
+                      </div>
+                      <button className={`btn ${i === 1 ? 'btn--primary' : ''}`} style={{ width: '100%' }}>
+                        Select Package
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Swiper controls */}
+            <div className="pricing-controls">
+              <button
+                className="btn pricing-nav-btn"
+                onClick={() => scrollToCard(pricingIndex - 1)}
+                disabled={pricingIndex === 0}
+                aria-label="Previous plan"
+              >
+                <ArrowLeft size={18} />
+              </button>
+
+              <div className="pricing-dots" role="tablist" aria-label="Pricing plans">
+                {products.map((p, i) => (
+                  <button
+                    key={i}
+                    className={`pricing-dot${i === pricingIndex ? ' pricing-dot--active' : ''}`}
+                    onClick={() => scrollToCard(i)}
+                    role="tab"
+                    aria-selected={i === pricingIndex}
+                    aria-label={p.name}
+                  />
+                ))}
+              </div>
+
+              <button
+                className="btn pricing-nav-btn"
+                onClick={() => scrollToCard(pricingIndex + 1)}
+                disabled={pricingIndex === products.length - 1}
+                aria-label="Next plan"
+              >
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -677,8 +804,8 @@ export default function SinglePageWebsite() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {[
-                  { icon: <Mail size={16} />, label: 'Email', value: 'system@corpusproject.com' },
-                  { icon: <Box size={16} />,  label: 'Location', value: 'HQ: Global Node 01' },
+                  { icon: <Mail size={16} />, label: 'Email', value: 'the.corpus.projects@gmail.com' },
+                  { icon: <Box size={16} />,  label: 'Location', value: 'Hong Kong Island' },
                 ].map(({ icon, label, value }) => (
                   <div key={label} style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
                     <div style={{

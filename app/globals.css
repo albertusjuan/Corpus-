@@ -551,6 +551,87 @@
   }
 
   /* ==========================================================================
+     Pricing Swiper (mobile-only horizontal carousel)
+     ========================================================================== */
+
+  /* Desktop: show grid, hide swiper */
+  .pricing-swiper { display: none; }
+  .pricing-desktop { display: grid; }
+
+  @media (max-width: 1024px) {
+    /* Hide grid, show swiper */
+    .pricing-desktop { display: none !important; }
+    .pricing-swiper { display: block; }
+
+    .pricing-swiper-track {
+      display: flex;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      /* Bleed to container edges so the card fills the full padded width */
+      margin-inline: calc(-1 * var(--gutter));
+    }
+    .pricing-swiper-track::-webkit-scrollbar { display: none; }
+
+    .pricing-swiper-card {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      padding: 1.5rem var(--gutter) 0;
+    }
+
+    /* Make card height auto (not 100%) inside swiper */
+    .pricing-swiper-card .card {
+      height: auto;
+    }
+
+    /* Controls row: prev — dots — next */
+    .pricing-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem var(--gutter) 0;
+    }
+
+    .pricing-nav-btn {
+      padding: 0.75rem;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pricing-nav-btn:disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .pricing-dots {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .pricing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--color-border-dark);
+      border: none;
+      cursor: pointer;
+      transition: background 200ms ease, width 200ms ease;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .pricing-dot--active {
+      background: var(--color-brutal);
+      width: 24px;
+    }
+  }
+
+  /* ==========================================================================
      Scrollbar
      ========================================================================== */
 
