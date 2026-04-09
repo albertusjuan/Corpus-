@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 type ContactPayload = {
   name?: string;
@@ -33,33 +33,14 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    if (!process.env.RESEND_API_KEY) {
       return Response.json(
         { message: 'Email delivery is not configured on the server yet.' },
         { status: 500 },
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    });
-
-    const text = [
-      'New package inquiry from Corpus Project website',
-      '',
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Company / Brand: ${company || 'Not provided'}`,
-      `Phone / WhatsApp: ${phone || 'Not provided'}`,
-      `Package Type: ${packageType}`,
-      '',
-      'Project Brief:',
-      projectBrief,
-    ].join('\n');
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const html = `
       <h2>New package inquiry from Corpus Project website</h2>
@@ -72,14 +53,20 @@ export async function POST(request: Request) {
       <p>${escapeHtml(projectBrief).replace(/\n/g, '<br />')}</p>
     `;
 
-    await transporter.sendMail({
-      from: process.env.GMAIL_USER,
+    const { error } = await resend.emails.send({
+      from: 'Corpus Project <onboarding@resend.dev>',
       to: RECEIVER_EMAIL,
       replyTo: email,
       subject: 'Order #1',
-      text,
       html,
     });
+
+    if (error) {
+      return Response.json(
+        { message: 'Unable to send your request right now. Please try again.' },
+        { status: 500 },
+      );
+    }
 
     return Response.json({
       message: 'Your request has been sent. We will review it and get back to you.',
