@@ -85,7 +85,7 @@ This route:
 - accepts JSON from the contact form
 - validates required fields
 - checks required environment variables
-- sends an email through Gmail SMTP using `nodemailer`
+- sends an email through **Resend**
 - returns JSON success or error messages for the frontend
 
 ## Current file map
@@ -163,7 +163,7 @@ On submit:
 1. the form prevents default browser submission
 2. the client sends a JSON `POST` request to `/api/contact`
 3. the route validates the payload
-4. Gmail SMTP sends the email to `the.corpus.projects@gmail.com`
+4. Resend sends the email to `the.corpus.projects@gmail.com`
 5. the UI displays a success or error message inline
 6. on success, the form fields reset
 
@@ -179,9 +179,7 @@ The body includes:
 - package type
 - project brief
 
-The route sends both:
-- plain text content
-- HTML content
+The route sends HTML content via Resend.
 
 `replyTo` is set to the user's email address so replies can go back to the person who submitted the form.
 
@@ -203,33 +201,26 @@ If SMTP send fails for any other reason, the route returns `500` with a generic 
 
 ### Transport
 Mail delivery currently uses:
-- `nodemailer`
-- Gmail service transport
+- `resend`
 
 Auth comes from environment variables:
-- `GMAIL_USER`
-- `GMAIL_APP_PASSWORD`
+- `RESEND_API_KEY`
+
+The `from` address is currently `Corpus Project <onboarding@resend.dev>` (Resend sandbox). Once a custom domain is verified in Resend, update it to `noreply@yourdomain.com`.
 
 ## Environment configuration
-The project now expects mail credentials through environment variables.
+The project expects a Resend API key through environment variables.
 
-`.env.example` documents the required values:
+`.env.local` (not committed) must contain:
 ```env
-GMAIL_USER=the.corpus.projects@gmail.com
-GMAIL_APP_PASSWORD=your-gmail-app-password
+RESEND_API_KEY=your-resend-api-key
 ```
 
-For real usage, these should be placed in `.env.local` or deployment environment settings, not committed secrets.
-
-### Important Gmail requirement
-This setup expects a **Gmail App Password**, not a normal Gmail password. In practice this usually means:
-- the Gmail account must have 2-Step Verification enabled
-- an App Password must be generated for SMTP use
+For deployment, set this in the hosting environment's environment variable settings.
 
 ## Dependencies
 The project now includes email delivery support:
-- `nodemailer`
-- `@types/nodemailer`
+- `resend`
 
 ## Motion rules
 - Scroll-reveal animations use `whileInView` with `once: true`
@@ -284,7 +275,7 @@ These issues are pre-existing and separate from the pricing/contact/email change
 - Do not split existing homepage sections into separate pages unless explicitly requested
 - Do not replace in-page section navigation with `Link` for internal anchors
 - Do not revert the server-side contact email flow back to `mailto:`
-- Do not expose Gmail secrets to the client with `NEXT_PUBLIC_` variables
+- Do not expose the Resend API key to the client with `NEXT_PUBLIC_` variables
 
 ## Current implementation summary
 The homepage now functions as:

@@ -6,33 +6,17 @@ import { ArrowRight, ArrowLeft, Globe, Monitor, Code, Layers, Mail, Briefcase, B
 import { products, portfolio } from '@/lib/data';
 import RotatingGlobe from '@/components/RotatingGlobe';
 import GuidingElement from '@/components/GuidingElement';
+import Footer from '@/components/Footer';
+import { Lang, translations, serviceTranslations, productTranslations, portfolioTranslations } from '@/lib/i18n';
 
-// --- Marquee content ---
-const MARQUEE_ITEMS = [
-  'Business Websites', '✦', 'Portfolio Websites', '✦',
-  'Landing Pages', '✦', 'E-Commerce Websites', '✦',
-  'Restaurant Websites', '✦', 'Personal Brand Websites', '✦',
-];
-
-// Duplicated so the CSS loop is seamless
-const MARQUEE_FULL = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
-
-// --- Stats ---
-const STATS = [
-  { num: '12+',  label: 'Websites Delivered' },
-  { num: '100%', label: 'On-Time Delivery' },
-  { num: '3',    label: 'Years Active' },
-  { num: '3 Mo', label: 'Up to 3 Months of Retainer' },
-];
-
-// --- Services ---
-const SERVICES = [
-  { icon: <Monitor size={22} />, name: 'Business Websites', desc: 'Professional websites for businesses that want to build trust, explain their services clearly, and attract more customers online.' },
-  { icon: <Briefcase size={22} />, name: 'Portfolio Websites', desc: 'Clean and modern websites to showcase your work, projects, services, or personal brand in a simple and credible way.' },
-  { icon: <Layers size={22} />, name: 'Landing Pages', desc: 'Focused one-page websites designed to present an offer clearly and encourage visitors to get in touch or take action.' },
-  { icon: <Code size={22} />, name: 'Custom Website Solutions', desc: 'Tailored websites built around your business needs, goals, and content without forcing you into a one-size-fits-all template.' },
-  { icon: <Globe size={22} />, name: 'Responsive Website Design', desc: 'Websites that look good and work smoothly on desktop, tablet, and mobile so every visitor gets a better experience.' },
-  { icon: <Box size={22} />, name: 'Website Support & Updates', desc: 'Ongoing help with edits, improvements, and maintenance after launch so your website stays current and reliable.' },
+// --- Service icons (lang-independent) ---
+const SERVICE_ICONS = [
+  <Monitor key="monitor" size={22} />,
+  <Briefcase key="briefcase" size={22} />,
+  <Layers key="layers" size={22} />,
+  <Code key="code" size={22} />,
+  <Globe key="globe" size={22} />,
+  <Box key="box" size={22} />,
 ];
 
 // --- Shared animation variants ---
@@ -90,6 +74,16 @@ export default function SinglePageWebsite() {
     status: 'idle',
     message: '',
   });
+  const [lang, setLang] = useState<Lang>('en');
+
+  // Lang-aware derived data
+  const t = translations[lang];
+  const MARQUEE_FULL = [...t.marqueeItems, ...t.marqueeItems];
+  const SERVICES = serviceTranslations[lang].map((s, i) => ({
+    icon: SERVICE_ICONS[i],
+    name: s.name,
+    desc: s.desc,
+  }));
 
   const scrollToCard = (index: number) => {
     const next = Math.max(0, Math.min(index, products.length - 1));
@@ -139,12 +133,12 @@ export default function SinglePageWebsite() {
       const payload = (await response.json()) as { message?: string };
 
       if (!response.ok) {
-        throw new Error(payload.message || 'Unable to send your request right now.');
+        throw new Error(payload.message || t.errorMessage);
       }
 
       setSubmissionState({
         status: 'success',
-        message: payload.message || 'Your request has been sent to Corpus Project.',
+        message: payload.message || t.successMessage,
       });
       setContactForm({
         name: '',
@@ -157,7 +151,7 @@ export default function SinglePageWebsite() {
     } catch (error) {
       setSubmissionState({
         status: 'error',
-        message: error instanceof Error ? error.message : 'Unable to send your request right now.',
+        message: error instanceof Error ? error.message : t.errorMessage,
       });
     } finally {
       setIsSubmitting(false);
@@ -167,6 +161,28 @@ export default function SinglePageWebsite() {
   return (
     <div ref={containerRef} className="page-wrapper">
       <GuidingElement />
+
+      {/* Language toggle */}
+      <button
+        onClick={() => setLang(l => l === 'en' ? 'zh' : 'en')}
+        style={{
+          position: 'fixed',
+          top: '1.5rem',
+          right: '1.5rem',
+          zIndex: 100,
+          fontFamily: 'var(--font-mono), monospace',
+          fontSize: '10px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.2em',
+          border: '1px solid var(--color-border)',
+          padding: '0.5rem 1rem',
+          background: 'var(--color-bg)',
+          color: 'var(--color-text)',
+          cursor: 'pointer',
+        }}
+      >
+        {t.langToggle}
+      </button>
 
       {/* ===================================================================
           HERO
@@ -213,7 +229,7 @@ export default function SinglePageWebsite() {
                     backgroundColor: 'var(--color-brutal)',
                     display: 'inline-block',
                   }} />
-                  Now Booking Projects
+                  {t.nowBooking}
                 </span>
               </motion.div>
 
@@ -269,7 +285,7 @@ export default function SinglePageWebsite() {
                   lineHeight: 1.6,
                 }}
               >
-                We design simple, modern websites that help businesses, creators, and brands present themselves clearly and professionally online.
+                {t.heroSubtitle}
               </motion.p>
 
               <motion.div
@@ -282,13 +298,13 @@ export default function SinglePageWebsite() {
                   className="btn btn--primary"
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Start Your Project <ArrowRight size={16} />
+                  {t.startProject} <ArrowRight size={16} />
                 </button>
                 <button
                   className="btn"
                   onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  View Work
+                  {t.viewWork}
                 </button>
               </motion.div>
             </motion.div>
@@ -338,7 +354,7 @@ export default function SinglePageWebsite() {
             textTransform: 'uppercase',
             letterSpacing: '0.3em',
           }}>
-            Scroll
+            {t.scrollCue}
           </span>
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -385,9 +401,9 @@ export default function SinglePageWebsite() {
               lineHeight: 1.15,
               fontWeight: 700,
             }}>
-              Simple websites, built with purpose.{' '}
+              {t.aboutHeadline}{' '}
               <span style={{ color: 'var(--color-text-muted)' }}>
-                Clear design that helps people understand and trust your brand.
+                {t.aboutSubHeadline}
               </span>
             </h2>
             <p style={{
@@ -397,7 +413,7 @@ export default function SinglePageWebsite() {
               margin: '0 auto',
               lineHeight: 1.7,
             }}>
-              Corpus Project creates clean, modern websites that are easy to use, visually strong, and focused on what matters most — helping your business look professional online.
+              {t.aboutBody}
             </p>
           </motion.div>
         </div>
@@ -415,8 +431,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Services</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>What We Build</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>{t.servicesLabel}</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.servicesHeading}</h2>
           </motion.div>
 
           <motion.div
@@ -473,8 +489,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Portfolio</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Recent Projects</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>{t.workLabel}</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.workHeading}</h2>
           </motion.div>
 
           <motion.div
@@ -543,7 +559,7 @@ export default function SinglePageWebsite() {
                     style={{ zIndex: 2, position: 'absolute' }}
                   >
                     <button className="btn btn--primary" style={{ padding: '0.7rem 1.4rem', fontSize: '11px' }}>
-                      View Project <ArrowUpRight size={14} />
+                      {t.viewProject} <ArrowUpRight size={14} />
                     </button>
                   </motion.div>
 
@@ -565,7 +581,7 @@ export default function SinglePageWebsite() {
                       {item.name}
                     </h3>
                     <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
-                      {item.category}
+                      {portfolioTranslations[lang][item.id]?.description ?? item.description}
                     </p>
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
@@ -589,7 +605,7 @@ export default function SinglePageWebsite() {
       }}>
         <div className="container">
           <div className="stats-grid">
-            {STATS.map((stat, i) => (
+            {t.stats.map((stat, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -641,8 +657,8 @@ export default function SinglePageWebsite() {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             style={{ marginBottom: 'var(--space-8)', borderLeft: '1px solid var(--color-border)', paddingLeft: '2rem' }}
           >
-            <span className="label" style={{ letterSpacing: '0.3em' }}>Pricing</span>
-            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Website Packages</h2>
+            <span className="label" style={{ letterSpacing: '0.3em' }}>{t.pricingLabel}</span>
+            <h2 style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.pricingHeading}</h2>
           </motion.div>
 
           {/* Desktop: 3-column grid */}
@@ -653,78 +669,81 @@ export default function SinglePageWebsite() {
             whileInView="whileInView"
             viewport={{ once: true }}
           >
-            {products.map((p, i) => (
-              <motion.div
-                key={p.id}
-                className="card"
-                variants={fadeUp}
-                style={{
-                  border: i === 1 ? '1px solid var(--color-brutal)' : '1px solid var(--color-border)',
-                }}
-              >
-                {i === 1 && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '-12px', left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: 'var(--color-brutal)',
-                    color: 'var(--color-brutal-text)',
-                    padding: '2px 14px',
-                    fontFamily: 'var(--font-mono), monospace',
-                    fontSize: '9px',
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.15em',
-                  }}>
-                    Most Popular
-                  </span>
-                )}
-
-                <span className="label" style={{ fontSize: '10px' }}>{p.category}</span>
-                <h3 className="card__title" style={{ fontSize: 'var(--text-2xl)', marginBottom: '1.5rem' }}>{p.name}</h3>
-                <p className="card__body" style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem' }}>
-                  {p.description}
-                </p>
-
-                <ul style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {p.features.map((feat, fi) => (
-                    <li key={fi} style={{ fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <div style={{
-                        width: '4px', height: '4px',
-                        background: i === 1 ? 'var(--color-brutal)' : 'white',
-                        flexShrink: 0,
-                      }} />
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-
-                <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid var(--color-border)' }}>
-                  <div style={{ marginBottom: '2rem' }}>
+            {products.map((p, i) => {
+              const lp = productTranslations[lang][p.id];
+              return (
+                <motion.div
+                  key={p.id}
+                  className="card"
+                  variants={fadeUp}
+                  style={{
+                    border: i === 1 ? '1px solid var(--color-brutal)' : '1px solid var(--color-border)',
+                  }}
+                >
+                  {i === 1 && (
                     <span style={{
+                      position: 'absolute',
+                      top: '-12px', left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: 'var(--color-brutal)',
+                      color: 'var(--color-brutal-text)',
+                      padding: '2px 14px',
                       fontFamily: 'var(--font-mono), monospace',
-                      fontSize: 'var(--text-xs)',
-                      color: 'var(--color-text-muted)',
+                      fontSize: '9px',
+                      fontWeight: 'bold',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
+                      letterSpacing: '0.15em',
                     }}>
-                      Starting At
+                      {t.mostPopular}
                     </span>
-                    <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700 }}>
-                      {p.price}
-                    </p>
+                  )}
+
+                  <span className="label" style={{ fontSize: '10px' }}>{lp.category}</span>
+                  <h3 className="card__title" style={{ fontSize: 'var(--text-2xl)', marginBottom: '1.5rem' }}>{p.name}</h3>
+                  <p className="card__body" style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem' }}>
+                    {lp.description}
+                  </p>
+
+                  <ul style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {lp.features.map((feat, fi) => (
+                      <li key={fi} style={{ fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '4px', height: '4px',
+                          background: i === 1 ? 'var(--color-brutal)' : 'white',
+                          flexShrink: 0,
+                        }} />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid var(--color-border)' }}>
+                    <div style={{ marginBottom: '2rem' }}>
+                      <span style={{
+                        fontFamily: 'var(--font-mono), monospace',
+                        fontSize: 'var(--text-xs)',
+                        color: 'var(--color-text-muted)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                      }}>
+                        {t.startingAt}
+                      </span>
+                      <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700 }}>
+                        {p.price}
+                      </p>
+                    </div>
+                    <button
+                      className={`btn ${i === 1 ? 'btn--primary' : ''}`}
+                      style={{ width: '100%' }}
+                      onClick={() => selectPackage(p.name)}
+                      type="button"
+                    >
+                      {i === 0 ? t.getStarted : i === 1 ? t.choosePackage : t.requestQuote}
+                    </button>
                   </div>
-                  <button
-                    className={`btn ${i === 1 ? 'btn--primary' : ''}`}
-                    style={{ width: '100%' }}
-                    onClick={() => selectPackage(p.name)}
-                    type="button"
-                  >
-                    {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
 
           {/* Mobile: horizontal card swiper */}
@@ -734,78 +753,81 @@ export default function SinglePageWebsite() {
               ref={pricingRef}
               onScroll={handlePricingScroll}
             >
-              {products.map((p, i) => (
-                <div key={p.id} className="pricing-swiper-card">
-                  <div
-                    className="card"
-                    style={{
-                      border: i === 1 ? '1px solid var(--color-brutal)' : '1px solid var(--color-border)',
-                    }}
-                  >
-                    {i === 1 && (
-                      <span style={{
-                        position: 'absolute',
-                        top: '-12px', left: '50%',
-                        transform: 'translateX(-50%)',
-                        backgroundColor: 'var(--color-brutal)',
-                        color: 'var(--color-brutal-text)',
-                        padding: '2px 14px',
-                        fontFamily: 'var(--font-mono), monospace',
-                        fontSize: '9px',
-                        fontWeight: 'bold',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                      }}>
-                        Most Popular
-                      </span>
-                    )}
-
-                    <span className="label" style={{ fontSize: '10px' }}>{p.category}</span>
-                    <h3 className="card__title" style={{ fontSize: 'var(--text-2xl)', marginBottom: '1.5rem' }}>{p.name}</h3>
-                    <p className="card__body" style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem' }}>
-                      {p.description}
-                    </p>
-
-                    <ul style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      {p.features.map((feat, fi) => (
-                        <li key={fi} style={{ fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <div style={{
-                            width: '4px', height: '4px',
-                            background: i === 1 ? 'var(--color-brutal)' : 'white',
-                            flexShrink: 0,
-                          }} />
-                          {feat}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid var(--color-border)' }}>
-                      <div style={{ marginBottom: '2rem' }}>
+              {products.map((p, i) => {
+                const lp = productTranslations[lang][p.id];
+                return (
+                  <div key={p.id} className="pricing-swiper-card">
+                    <div
+                      className="card"
+                      style={{
+                        border: i === 1 ? '1px solid var(--color-brutal)' : '1px solid var(--color-border)',
+                      }}
+                    >
+                      {i === 1 && (
                         <span style={{
+                          position: 'absolute',
+                          top: '-12px', left: '50%',
+                          transform: 'translateX(-50%)',
+                          backgroundColor: 'var(--color-brutal)',
+                          color: 'var(--color-brutal-text)',
+                          padding: '2px 14px',
                           fontFamily: 'var(--font-mono), monospace',
-                          fontSize: 'var(--text-xs)',
-                          color: 'var(--color-text-muted)',
+                          fontSize: '9px',
+                          fontWeight: 'bold',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.1em',
+                          letterSpacing: '0.15em',
                         }}>
-                          Starting At
+                          {t.mostPopular}
                         </span>
-                        <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700 }}>
-                          {p.price}
-                        </p>
+                      )}
+
+                      <span className="label" style={{ fontSize: '10px' }}>{lp.category}</span>
+                      <h3 className="card__title" style={{ fontSize: 'var(--text-2xl)', marginBottom: '1.5rem' }}>{p.name}</h3>
+                      <p className="card__body" style={{ color: 'var(--color-text-muted)', marginBottom: '2.5rem' }}>
+                        {lp.description}
+                      </p>
+
+                      <ul style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {lp.features.map((feat, fi) => (
+                          <li key={fi} style={{ fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div style={{
+                              width: '4px', height: '4px',
+                              background: i === 1 ? 'var(--color-brutal)' : 'white',
+                              flexShrink: 0,
+                            }} />
+                            {feat}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid var(--color-border)' }}>
+                        <div style={{ marginBottom: '2rem' }}>
+                          <span style={{
+                            fontFamily: 'var(--font-mono), monospace',
+                            fontSize: 'var(--text-xs)',
+                            color: 'var(--color-text-muted)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                          }}>
+                            {t.startingAt}
+                          </span>
+                          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700 }}>
+                            {p.price}
+                          </p>
+                        </div>
+                        <button
+                          className={`btn ${i === 1 ? 'btn--primary' : ''}`}
+                          style={{ width: '100%' }}
+                          onClick={() => selectPackage(p.name)}
+                          type="button"
+                        >
+                          {i === 0 ? t.getStarted : i === 1 ? t.choosePackage : t.requestQuote}
+                        </button>
                       </div>
-                      <button
-                        className={`btn ${i === 1 ? 'btn--primary' : ''}`}
-                        style={{ width: '100%' }}
-                        onClick={() => selectPackage(p.name)}
-                        type="button"
-                      >
-                        {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Swiper controls */}
@@ -869,7 +891,7 @@ export default function SinglePageWebsite() {
                   backgroundColor: 'var(--color-brutal)',
                   display: 'inline-block',
                 }} />
-                04 / Contact
+                {t.contactSection}
               </p>
 
               <h2 style={{
@@ -879,7 +901,7 @@ export default function SinglePageWebsite() {
                 letterSpacing: '-0.04em',
                 lineHeight: 0.9,
               }}>
-                LET’S TALK.
+                {t.contactHeading}
               </h2>
 
               <p style={{
@@ -889,13 +911,13 @@ export default function SinglePageWebsite() {
                 lineHeight: 1.6,
                 maxWidth: '360px',
               }}>
-                Tell us what you need, and we’ll get back to you with a clear plan, timeline, and package recommendation.
+                {t.contactSubtitle}
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {[
-                  { icon: <Mail size={16} />, label: 'Email', value: 'the.corpus.projects@gmail.com' },
-                  { icon: <Box size={16} />,  label: 'Location', value: 'Hong Kong Island' },
+                  { icon: <Mail size={16} />, label: t.contactEmail, value: 'the.corpus.projects@gmail.com' },
+                  { icon: <Box size={16} />,  label: t.contactLocation, value: 'Hong Kong Island' },
                 ].map(({ icon, label, value }) => (
                   <div key={label} style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
                     <div style={{
@@ -930,69 +952,69 @@ export default function SinglePageWebsite() {
               onSubmit={handleContactSubmit}
             >
               <div>
-                <label className="form-label">Name</label>
+                <label className="form-label">{t.labelName}</label>
                 <input
                   type="text"
                   name="name"
                   className="form-input"
-                  placeholder="Your Name"
+                  placeholder={t.placeholderName}
                   value={contactForm.name}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div>
-                <label className="form-label">Email</label>
+                <label className="form-label">{t.labelEmail}</label>
                 <input
                   type="email"
                   name="email"
                   className="form-input"
-                  placeholder="Email Address"
+                  placeholder={t.placeholderEmail}
                   value={contactForm.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div>
-                <label className="form-label">Company / Brand</label>
+                <label className="form-label">{t.labelCompany}</label>
                 <input
                   type="text"
                   name="company"
                   className="form-input"
-                  placeholder="Business or Brand Name"
+                  placeholder={t.placeholderCompany}
                   value={contactForm.company}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label className="form-label">Phone / WhatsApp</label>
+                <label className="form-label">{t.labelPhone}</label>
                 <input
                   type="text"
                   name="phone"
                   className="form-input"
-                  placeholder="Contact Number"
+                  placeholder={t.placeholderPhone}
                   value={contactForm.phone}
                   onChange={handleInputChange}
                 />
               </div>
               <div>
-                <label className="form-label">Package Type</label>
+                <label className="form-label">{t.labelPackage}</label>
                 <input
                   type="text"
                   name="packageType"
                   className="form-input"
-                  placeholder="Essential, Advance, or Custom"
+                  placeholder={t.placeholderPackage}
                   value={contactForm.packageType}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div>
-                <label className="form-label">Project Brief</label>
+                <label className="form-label">{t.labelBrief}</label>
                 <textarea
                   name="projectBrief"
                   className="form-textarea"
-                  placeholder="Tell us about your website or business..."
+                  placeholder={t.placeholderBrief}
                   value={contactForm.projectBrief}
                   onChange={handleInputChange}
                   required
@@ -1004,7 +1026,7 @@ export default function SinglePageWebsite() {
                 style={{ alignSelf: 'stretch' }}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Sending...' : 'Send Message'} <ArrowRight size={16} />
+                {isSubmitting ? t.sending : t.sendMessage} <ArrowRight size={16} />
               </button>
               <p
                 aria-live="polite"
@@ -1023,6 +1045,8 @@ export default function SinglePageWebsite() {
           </div>
         </div>
       </section>
+
+      <Footer tagline={t.footerTagline} />
 
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes spin {

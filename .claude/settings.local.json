@@ -14,7 +14,8 @@
       "Read(//c/Users/Albert/.claude/projects/C--Users-Albert-Documents-Work-Projects/memory/**)",
       "Bash(python3 \"C:\\\\Users\\\\Albert\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"agency portfolio brutalist monochrome dark web architecture studio\" --design-system -p \"Corpus Project\" -f markdown)",
       "Bash(python:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
