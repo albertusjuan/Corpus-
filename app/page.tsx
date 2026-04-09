@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Globe, Monitor, Code, Layers, Mail, Briefcase, Box, ArrowUpRight } from 'lucide-react';
 import { products, portfolio } from '@/lib/data';
@@ -50,6 +50,20 @@ const staggerContainer = {
   transition: { staggerChildren: 0.1 },
 };
 
+type ContactFormData = {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  packageType: string;
+  projectBrief: string;
+};
+
+type SubmissionState = {
+  status: 'idle' | 'success' | 'error';
+  message: string;
+};
+
 // --- Main Page ---
 export default function SinglePageWebsite() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,6 +77,19 @@ export default function SinglePageWebsite() {
 
   const pricingRef = useRef<HTMLDivElement>(null);
   const [pricingIndex, setPricingIndex] = useState(0);
+  const [contactForm, setContactForm] = useState<ContactFormData>({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    packageType: '',
+    projectBrief: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionState, setSubmissionState] = useState<SubmissionState>({
+    status: 'idle',
+    message: '',
+  });
 
   const scrollToCard = (index: number) => {
     const next = Math.max(0, Math.min(index, products.length - 1));
@@ -74,6 +101,67 @@ export default function SinglePageWebsite() {
     if (!pricingRef.current) return;
     const index = Math.round(pricingRef.current.scrollLeft / pricingRef.current.offsetWidth);
     setPricingIndex(index);
+  };
+
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+    setContactForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const selectPackage = (packageType: string) => {
+    setContactForm((current) => ({
+      ...current,
+      packageType,
+    }));
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setIsSubmitting(true);
+    setSubmissionState({ status: 'idle', message: '' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm),
+      });
+
+      const payload = (await response.json()) as { message?: string };
+
+      if (!response.ok) {
+        throw new Error(payload.message || 'Unable to send your request right now.');
+      }
+
+      setSubmissionState({
+        status: 'success',
+        message: payload.message || 'Your request has been sent to Corpus Project.',
+      });
+      setContactForm({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        packageType: '',
+        projectBrief: '',
+      });
+    } catch (error) {
+      setSubmissionState({
+        status: 'error',
+        message: error instanceof Error ? error.message : 'Unable to send your request right now.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -396,7 +484,7 @@ export default function SinglePageWebsite() {
             whileInView="whileInView"
             viewport={{ once: true }}
           >
-            {portfolio.map((item, i) => (
+            {portfolio.map((item) => (
               <motion.div
                 key={item.id}
                 variants={fadeUp}
@@ -467,7 +555,7 @@ export default function SinglePageWebsite() {
                     color: 'var(--color-border-dark)',
                     zIndex: 1,
                   }}>
-                    {item.tag} // PROJECT
+                    {`${item.tag} // PROJECT`}
                   </span>
                 </motion.div>
 
@@ -626,7 +714,12 @@ export default function SinglePageWebsite() {
                       {p.price}
                     </p>
                   </div>
-                  <button className={`btn ${i === 1 ? 'btn--primary' : ''}`} style={{ width: '100%' }}>
+                  <button
+                    className={`btn ${i === 1 ? 'btn--primary' : ''}`}
+                    style={{ width: '100%' }}
+                    onClick={() => selectPackage(p.name)}
+                    type="button"
+                  >
                     {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
                   </button>
                 </div>
@@ -701,7 +794,12 @@ export default function SinglePageWebsite() {
                           {p.price}
                         </p>
                       </div>
-                      <button className={`btn ${i === 1 ? 'btn--primary' : ''}`} style={{ width: '100%' }}>
+                      <button
+                        className={`btn ${i === 1 ? 'btn--primary' : ''}`}
+                        style={{ width: '100%' }}
+                        onClick={() => selectPackage(p.name)}
+                        type="button"
+                      >
                         {i === 0 ? 'Get Started' : i === 1 ? 'Choose This Package' : 'Request a Quote'}
                       </button>
                     </div>
@@ -829,23 +927,98 @@ export default function SinglePageWebsite() {
             <motion.form
               {...fadeUp}
               className="contact-form"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleContactSubmit}
             >
               <div>
                 <label className="form-label">Name</label>
-                <input type="text" className="form-input" placeholder="Your Name" />
+                <input
+                  type="text"
+                  name="name"
+                  className="form-input"
+                  placeholder="Your Name"
+                  value={contactForm.name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div>
                 <label className="form-label">Email</label>
-                <input type="email" className="form-input" placeholder="Email Address" />
+                <input
+                  type="email"
+                  name="email"
+                  className="form-input"
+                  placeholder="Email Address"
+                  value={contactForm.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <label className="form-label">Company / Brand</label>
+                <input
+                  type="text"
+                  name="company"
+                  className="form-input"
+                  placeholder="Business or Brand Name"
+                  value={contactForm.company}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="form-label">Phone / WhatsApp</label>
+                <input
+                  type="text"
+                  name="phone"
+                  className="form-input"
+                  placeholder="Contact Number"
+                  value={contactForm.phone}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="form-label">Package Type</label>
+                <input
+                  type="text"
+                  name="packageType"
+                  className="form-input"
+                  placeholder="Essential, Advance, or Custom"
+                  value={contactForm.packageType}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div>
                 <label className="form-label">Project Brief</label>
-                <textarea className="form-textarea" placeholder="Tell us about your website or business..." />
+                <textarea
+                  name="projectBrief"
+                  className="form-textarea"
+                  placeholder="Tell us about your website or business..."
+                  value={contactForm.projectBrief}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
-              <button type="submit" className="btn btn--primary" style={{ alignSelf: 'stretch' }}>
-                Send Message <ArrowRight size={16} />
+              <button
+                type="submit"
+                className="btn btn--primary"
+                style={{ alignSelf: 'stretch' }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'} <ArrowRight size={16} />
               </button>
+              <p
+                aria-live="polite"
+                style={{
+                  minHeight: '1.5rem',
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: 'var(--text-xs)',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: submissionState.status === 'error' ? '#ff7a7a' : 'var(--color-brutal)',
+                }}
+              >
+                {submissionState.message}
+              </p>
             </motion.form>
           </div>
         </div>
