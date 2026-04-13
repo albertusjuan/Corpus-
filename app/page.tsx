@@ -162,8 +162,8 @@ export default function SinglePageWebsite() {
     <div ref={containerRef} className="page-wrapper">
       <GuidingElement />
 
-      {/* Language toggle */}
-      <button
+      {/* Language toggle — hidden, preserved for future use */}
+      {/* <button
         onClick={() => setLang(l => l === 'en' ? 'zh' : 'en')}
         style={{
           position: 'fixed',
@@ -182,7 +182,7 @@ export default function SinglePageWebsite() {
         }}
       >
         {t.langToggle}
-      </button>
+      </button> */}
 
       {/* ===================================================================
           HERO
@@ -504,8 +504,9 @@ export default function SinglePageWebsite() {
               <motion.div
                 key={item.id}
                 variants={fadeUp}
-                style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', cursor: 'pointer' }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', cursor: item.url ? 'pointer' : 'default' }}
                 whileHover="hover"
+                onClick={() => item.url && window.open(item.url, '_blank', 'noopener,noreferrer')}
               >
                 <motion.div
                   style={{
