@@ -550,29 +550,35 @@ export default function SinglePageWebsite() {
                     }}
                   />
 
-                  <motion.div
-                    variants={{
-                      hover:   { opacity: 1, y: 0 },
-                      initial: { opacity: 0, y: 20 },
-                    }}
-                    transition={{ duration: 0.35 }}
-                    style={{ zIndex: 2, position: 'absolute' }}
-                  >
-                    <button className="btn btn--primary" style={{ padding: '0.7rem 1.4rem', fontSize: '11px' }}>
-                      {t.viewProject} <ArrowUpRight size={14} />
-                    </button>
-                  </motion.div>
-
-                  <span style={{
-                    fontFamily: 'var(--font-mono), monospace',
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    fontSize: '9px',
-                    color: 'var(--color-border-dark)',
-                    zIndex: 1,
-                  }}>
-                    {`${item.tag} // PROJECT`}
-                  </span>
+                  {item.url ? (
+                    <iframe
+                      src={item.url}
+                      title={item.name}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '250%',
+                        height: '250%',
+                        transform: 'scale(0.4)',
+                        transformOrigin: 'top left',
+                        border: 'none',
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                      }}
+                    />
+                  ) : (
+                    <span style={{
+                      fontFamily: 'var(--font-mono), monospace',
+                      letterSpacing: '0.25em',
+                      textTransform: 'uppercase',
+                      fontSize: '9px',
+                      color: 'var(--color-border-dark)',
+                      zIndex: 1,
+                    }}>
+                      {`${item.tag} // PROJECT`}
+                    </span>
+                  )}
                 </motion.div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -593,6 +599,17 @@ export default function SinglePageWebsite() {
               </motion.div>
             ))}
           </motion.div>
+
+          <p style={{
+            marginTop: '2.5rem',
+            textAlign: 'center',
+            fontFamily: 'var(--font-mono), monospace',
+            fontSize: '11px',
+            color: '#444',
+            letterSpacing: '0.15em',
+          }}>
+            AND MANY MORE
+          </p>
         </div>
       </section>
 

@@ -16,6 +16,7 @@ export interface PortfolioItem {
   description: string;
   features: string[];
   image: string | null;
+  url?: string;
 }
 
 export const products: Product[] = [
@@ -68,39 +69,41 @@ export const products: Product[] = [
 
 export const portfolio: PortfolioItem[] = [
   {
-    id: 'corpus-v1',
-    category: 'Web Architecture',
+    id: 'dy7',
+    category: 'Football Academy',
     tag: 'nextjs',
-    name: 'Corpus Genesis',
-    description: 'The initial prototype for our own digital presence, exploring monochrome aesthetics and fluid motion.',
-    features: ['Next.js', 'Framer Motion', 'Tailwind'],
+    name: 'DY7 Academy',
+    description: 'A minimalist website with monochrome aesthetics, fluid motion, and the identity of a modern football academy.',
+    features: ['Next.js', 'Live Video'],
     image: null,
+    url: 'https://dy7.vercel.app/',
   },
   {
-    id: 'nexus-labs',
-    category: 'Software Platform',
-    tag: 'saas',
-    name: 'Nexus Labs',
+    id: 'sam',
+    category: 'Rubber Roller Factory',
+    tag: 'nextjs',
+    name: 'PT Sugih Arto Moro',
     description: 'A highly interactive dashboard for real-time data visualization and infrastructure monitoring.',
-    features: ['3D Visuals', 'Real-time API', 'Advanced Motion'],
+    features: ['Next.js', 'Real-time API'],
     image: null,
+    url: 'https://ptsam.net/'
   },
-  {
-    id: 'monolith-capital',
-    category: 'Financial Service',
-    tag: 'business',
-    name: 'Monolith Capital',
-    description: 'A sophisticated landing page for a boutique investment firm, emphasizing trust through architectural clarity.',
-    features: ['Clean Typography', 'Fluid Scroll', 'Professional Aesthetic'],
-    image: null,
-  },
-  {
-    id: 'aether-studio',
-    category: 'Creative Portfolio',
-    tag: 'design',
-    name: 'Aether Studio',
-    description: 'An immersive portfolio experience for a global design agency, pushing the boundaries of web interactions.',
-    features: ['Custom Shaders', 'Horizontal Scroll', 'Brand Identity'],
-    image: null,
-  },
+  // {
+  //   id: 'monolith-capital',
+  //   category: 'Financial Service',
+  //   tag: 'business',
+  //   name: 'Monolith Capital',
+  //   description: 'A sophisticated landing page for a boutique investment firm, emphasizing trust through architectural clarity.',
+  //   features: ['Clean Typography', 'Fluid Scroll', 'Professional Aesthetic'],
+  //   image: null,
+  // },
+  // {
+  //   id: 'aether-studio',
+  //   category: 'Creative Portfolio',
+  //   tag: 'design',
+  //   name: 'Aether Studio',
+  //   description: 'An immersive portfolio experience for a global design agency, pushing the boundaries of web interactions.',
+  //   features: ['Custom Shaders', 'Horizontal Scroll', 'Brand Identity'],
+  //   image: null,
+  // },
 ];
